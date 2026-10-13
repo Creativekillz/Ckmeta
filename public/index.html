@@ -212,11 +212,11 @@ const lock=()=>`<div class="card"><h2>🔒 Members only</h2><p class="sub">Sign 
 function acct(){const m=A.m,e=A.e?`<p class="sub" style="color:#a30">${esc(A.e)}</p>`:"",inp=(id,ph,t)=>`<input id="${id}" type="${t||"text"}" placeholder="${ph}" style="margin-bottom:8px" autocomplete="off">`,bt=(f,t,s)=>`<button class="btn" style="${s||""}" onclick="${f}">${t}</button>`,dm=(c,w)=>`<div class="card" style="background:#fffbe0">Demo: ${w} <b>${c}</b><br><span class="sub" style="margin:0">Real texts need an SMS provider.</span></div>`;
 const V={
 home:()=>AUTH?`<h2>Hi, ${esc(AUTH)}</h2><p class="sub">${CON.size} app${CON.size==1?"":"s"} connected</p>${bt("go(1)","Continue")}${bt("am('connect')","Manage connected apps",gh)}${bt("out()","Log out",gh)}`:`<h2>Welcome to CKMETA</h2><p class="sub">Log in to connect your social and music accounts.</p>${bt("am('login')","Log in")}${bt("am('signup')","Sign up",gh)}${bt("guest()","Continue as guest",gh)}<p class="note">Guests can try uploads, captions and previews, but can't connect social or music apps.</p>`,
-signup:()=>`<h2>Create account</h2>${inp("a1","Username")}${inp("a2","Password (6+ characters)","password")}${inp("a3","Phone, e.g. +15551234567","tel")}${e}${bt("su()","Send verification code")}${bt("am('home')","Back",gh)}`,
+signup:()=>`<h2>Create account</h2>${inp("a1","Username")}${inp("a2","Password (6+ characters)","password")}${e}${bt("su()","Create account")}${bt("am('home')","Back",gh)}`,
 code:()=>`<h2>Enter your code</h2><p class="sub">We sent a 6-digit code to ${esc(A.ph)}.</p>${A.code?dm(A.code,"your code is"):""}${inp("a1","6-digit code")}${e}${bt("vc()","Verify")}${bt("am('home')","Cancel",gh)}`,
 connect:()=>`<h2>Connect your apps</h2><p class="sub">Link what you use so we can track your metadata and streams.</p>${apps()}${bt("go(1)","Continue")}`,
-login:()=>`<h2>Log in</h2>${inp("a1","Username")}${inp("a2","Password","password")}${e}${bt("li()","Log in")}<p class="note"><a href="#" onclick="am('forgot');return false" style="color:var(--ink)">Forgot password?</a></p>${bt("am('home')","Back",gh)}`,
-forgot:()=>`<h2>Reset password</h2><p class="sub">We'll text a code to the phone on your account.</p>${inp("a1","Username")}${e}${bt("fp()","Send code")}${bt("am('login')","Back",gh)}`,
+login:()=>`<h2>Log in</h2>${inp("a1","Username")}${inp("a2","Password","password")}${e}${bt("li()","Log in")}${bt("am('home')","Back",gh)}`,
+forgot:()=>`<h2>Reset password</h2><p class="sub">We'll email a code to the address on your account.</p>${inp("a1","Username")}${e}${bt("fp()","Send code")}${bt("am('login')","Back",gh)}`,
 reset:()=>`<h2>New password</h2><p class="sub">Code sent to ${esc(A.ph)}</p>${A.code?dm(A.code,"your code is"):""}${inp("a1","6-digit code")}${inp("a2","New password","password")}${e}${bt("rs()","Reset password")}`};
 $("auth").innerHTML=`<div class="card">${V[m]()}</div>`;$("acb").textContent=AUTH||"Guest"}
 go(0)

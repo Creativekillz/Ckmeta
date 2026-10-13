@@ -33,7 +33,7 @@ window.tc = async p => {
 };
 
 /* ---- accounts ---- */
-window.su = async () => { const u = gv('a1'), p = $('a2').value, ph = gv('a3'); try { const r = await api('/api/signup/start', { username: u, password: p, phone: ph }); A = { m: 'code', ph, code: r.devCode || '' }; acct(); } catch (e) { am('signup', e.message); } };
+window.su = async () => { const u = gv('a1'), p = $('a2').value, em = gv('a3'); try { const r = await api('/api/signup', { username: u, password: p, email: em }); AUTH = r.user; CON = new Set(); REAL = null; A = { m: 'connect' }; acct(); } catch (e) { am('signup', e.message); } };
 window.vc = async () => { try { const r = await api('/api/signup/verify', { phone: A.ph, code: gv('a1') }); AUTH = r.user; CON = new Set(); A = { m: 'connect' }; acct(); } catch (e) { am('code', e.message); } };
 window.li = async () => { try { const r = await api('/api/login', { username: gv('a1'), password: $('a2').value }); AUTH = r.user; CON = new Set(r.connected); REAL = null; A = { m: 'home' }; acct(); go(1); } catch (e) { am('login', e.message); } };
 window.fp = async () => { const u = gv('a1'); try { const r = await api('/api/forgot/start', { username: u }); A = { m: 'reset', u, ph: r.masked, code: r.devCode || '' }; acct(); } catch (e) { am('forgot', e.message); } };
