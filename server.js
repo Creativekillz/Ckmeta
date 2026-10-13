@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const E = process.env, BASE = E.BASE_URL || 'http://localhost:3000';
-const dev = !E.TWILIO_VERIFY_SID && /localhost/.test(BASE);           // dev mode: SMS code returned in response (never in production)
+const dev = /localhost/.test(BASE);           // dev mode: SMS code returned in response (never in production)
 const app = express();
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '4mb' }));
@@ -22,6 +22,7 @@ const Q = async (sql, a = []) => (await db.execute({ sql, args: a })).rows, one 
 await db.executeMultiple(`create table if not exists users(id integer primary key,username text unique,pw text,phone text);
 create table if not exists conns(uid integer,provider text,account text,access text,refresh text,expires integer,primary key(uid,provider));
 create table if not exists manual(uid integer,provider text,data text,primary key(uid,provider));`);
+try { await db.execute('alter table users add column email text'); } catch {}
 const KEY = crypto.createHash('sha256').update(E.TOKEN_KEY || 'dev-key').digest();
 const enc = s => { const iv = crypto.randomBytes(12), c = crypto.createCipheriv('aes-256-gcm', KEY, iv), ct = Buffer.concat([c.update(s, 'utf8'), c.final()]); return Buffer.concat([iv, c.getAuthTag(), ct]).toString('base64'); };
 const dec = s => { const b = Buffer.from(s, 'base64'), d = crypto.createDecipheriv('aes-256-gcm', KEY, b.subarray(0, 12)); d.setAuthTag(b.subarray(12, 28)); return Buffer.concat([d.update(b.subarray(28)), d.final()]).toString('utf8'); };
@@ -36,30 +37,23 @@ const wrap = f => async (q, s) => { try { await f(q, s); } catch (e) { console.e
 const NAME = { youtube: 'YouTube', instagram: 'Instagram', tiktok: 'TikTok', spotify: 'Spotify', apple: 'Apple Music' };
 const connected = async uid => (await Q('select provider from conns where uid=?', [uid])).map(r => NAME[r.provider]);
 
-/* ---------- SMS verification (Twilio Verify) ---------- */
-const devCodes = new Map();
-const tw = async (p, b) => (await fetch(`https://verify.twilio.com/v2/Services/${E.TWILIO_VERIFY_SID}/${p}`, { method: 'POST', headers: { Authorization: 'Basic ' + Buffer.from(E.TWILIO_SID + ':' + E.TWILIO_TOKEN).toString('base64'), 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(b) })).json();
-async function sendCode(phone) { if (!dev && !E.TWILIO_VERIFY_SID) throw new Error('SMS verification is not configured on this server'); if (dev) { const c = String(100000 + crypto.randomInt(900000)); devCodes.set(phone, c); return c; } const r = await tw('Verifications', { To: phone, Channel: 'sms' }); if (r.status !== 'pending') throw new Error('Could not send SMS code'); }
-async function checkCode(phone, code) { if (dev) return devCodes.get(phone) === code; return (await tw('VerificationCheck', { To: phone, Code: code })).status === 'approved'; }
-const PHONE = /^\+\d{8,15}$/, pending = new Map();
+/* ---------- email codes for password reset (Brevo free tier) ---------- */
+const codes = new Map(), EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, sha = x => crypto.createHash('sha256').update(x).digest('hex');
+async function sendMail(to, subject, html) {
+  if (!E.BREVO_API_KEY || !E.MAIL_FROM) { if (dev) return; throw new Error('Email is not set up on this server yet'); }
+  const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: { 'api-key': E.BREVO_API_KEY, 'content-type': 'application/json' }, body: JSON.stringify({ sender: { email: E.MAIL_FROM, name: 'CKMETA' }, to: [{ email: to }], subject, htmlContent: html }) });
+  if (!r.ok) throw new Error('Could not send the email');
+}
 
 /* ---------- auth routes ---------- */
-app.post('/api/signup/start', lim(10), wrap(async (q, s) => {
-  const { username = '', password = '', phone = '' } = q.body;
+app.post('/api/signup', lim(10), wrap(async (q, s) => {
+  const { username = '', password = '', email = '' } = q.body;
   if (!/^[\w.]{3,24}$/.test(username)) throw new Error('Username: 3-24 letters, numbers, . or _');
-  if (password.length < 8) throw new Error('Password needs 8+ characters');
-  if (!PHONE.test(phone)) throw new Error('Phone must look like +15551234567');
+  if (password.length < 6) throw new Error('Password needs 6+ characters');
+  if (email && !EMAIL.test(email)) throw new Error('That email does not look right');
   if (await one('select 1 from users where username=? collate nocase', [username])) throw new Error('Username taken');
-  if (await one('select 1 from users where phone=?', [phone])) throw new Error('Phone already registered');
-  pending.set(phone, { username, pw: await argon2.hash(password), exp: Date.now() + 6e5 });
-  const devCode = await sendCode(phone); s.json({ ok: true, devCode });
-}));
-app.post('/api/signup/verify', lim(20), wrap(async (q, s) => {
-  const { phone, code } = q.body, p = pending.get(phone);
-  if (!p || p.exp < Date.now()) throw new Error('Start sign up again');
-  if (!(await checkCode(phone, String(code).trim()))) throw new Error('Wrong code');
-  const r = await run('insert into users(username,pw,phone) values(?,?,?)', [p.username, p.pw, phone]);
-  pending.delete(phone); q.session.uid = Number(r.lastInsertRowid); s.json({ user: p.username });
+  const r = await run('insert into users(username,pw,phone,email) values(?,?,?,?)', [username, await argon2.hash(password), '', email.trim().toLowerCase() || null]);
+  q.session.uid = Number(r.lastInsertRowid); s.json({ user: username });
 }));
 app.post('/api/login', lim(20), wrap(async (q, s) => {
   const u = await one('select * from users where username=? collate nocase', [q.body.username || '']);
@@ -71,12 +65,19 @@ app.get('/api/me', wrap(async (q, s) => { const u = q.session?.uid && await one(
 app.post('/api/forgot/start', lim(10), wrap(async (q, s) => {
   const u = await one('select * from users where username=? collate nocase', [q.body.username || '']);
   if (!u) throw new Error('No account with that username');
-  const devCode = await sendCode(u.phone); s.json({ masked: '•••• ' + u.phone.slice(-3), devCode });
+  if (!u.email) throw new Error('This account has no recovery email');
+  const c = String(100000 + crypto.randomInt(900000));
+  codes.set(u.username.toLowerCase(), { hash: sha(c), exp: Date.now() + 6e5, tries: 0 });
+  await sendMail(u.email, 'Your CKMETA reset code', `<p>Your code is <b>${c}</b>. It expires in 10 minutes. If you did not ask for this, ignore this email.</p>`);
+  const [a, d] = u.email.split('@'); s.json({ masked: a[0] + '•••@' + d, devCode: dev ? c : undefined });
 }));
 app.post('/api/forgot/finish', lim(20), wrap(async (q, s) => {
   const { username = '', code = '', password = '' } = q.body, u = await one('select * from users where username=? collate nocase', [username]);
-  if (!u || password.length < 8) throw new Error('Check username and use 8+ character password');
-  if (!(await checkCode(u.phone, String(code).trim()))) throw new Error('Wrong code');
+  if (!u || password.length < 8) throw new Error('Check the username and use an 8+ character password');
+  const k = codes.get(u.username.toLowerCase());
+  if (!k || k.exp < Date.now() || ++k.tries > 5) throw new Error('Code expired. Request a new one');
+  if (sha(String(code).trim()) !== k.hash) throw new Error('Wrong code');
+  codes.delete(u.username.toLowerCase());
   await run('update users set pw=? where id=?', [await argon2.hash(password), u.id]); s.json({ ok: true });
 }));
 
