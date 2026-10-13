@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ckmeta
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - { key: BASE_URL, sync: false }
+      - { key: SESSION_SECRET, generateValue: true }
+      - { key: TOKEN_KEY, generateValue: true }
+      - { key: TURSO_URL, sync: false }
+      - { key: TURSO_TOKEN, sync: false }
+      - { key: GEMINI_API_KEY, sync: false }
+      - { key: IG_APP_ID, sync: false }
+      - { key: IG_APP_SECRET, sync: false }
+      - { key: TIKTOK_CLIENT_KEY, sync: false }
+      - { key: TIKTOK_CLIENT_SECRET, sync: false }
+      - { key: GOOGLE_CLIENT_ID, sync: false }
+      - { key: GOOGLE_CLIENT_SECRET, sync: false }
+      - { key: SPOTIFY_CLIENT_ID, sync: false }
+      - { key: SPOTIFY_CLIENT_SECRET, sync: false }
