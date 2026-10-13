@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CKMETA V.2</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f5f2;--card:#fff;--ink:#141414;--mute:#7a766f;--line:#141414;--neon:#39ff14;--acc:#e9e4ff;--bd:#ebe7e1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#f7f5f2;--card:#fff;--ink:#141414;--mute:#7a766f}}
+:root[data-theme="dark"]{--bg:#f7f5f2;--card:#fff;--ink:#141414;--mute:#7a766f}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.logo{font-weight:800;letter-spacing:-.5px;font-size:20px}.logo i{font-style:normal;background:var(--neon);padding:1px 6px;border-radius:6px;margin-left:4px;font-size:13px}
+nav{display:flex;gap:6px;background:#ece8e2;border-radius:99px;padding:3px}
+nav button{border:0;background:none;padding:6px 10px;border-radius:99px;font:600 12px -apple-system,Arial,sans-serif;cursor:pointer;color:var(--mute)}
+nav button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px #0001}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 4px;font-size:17px}.sub{color:var(--mute);font-size:13px;margin:0 0 12px}
+.drop{border:2px dashed #cfc8bd;border-radius:18px;padding:30px 12px;text-align:center;cursor:pointer;background:#fcfbf9}
+.drop img,.drop video{max-width:100%;max-height:220px;border-radius:12px}
+input[type=text],select{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;font:inherit;background:#fcfbf9;color:var(--ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chip{padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:#fcfbf9;font-size:13px;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn{width:100%;border:0;background:var(--ink);color:#fff;padding:14px;border-radius:14px;font:700 15px inherit;cursor:pointer;margin-top:8px}
+.btn small{color:var(--neon)}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.lbl{font-size:12px;color:var(--mute);margin:10px 0 4px}
+.eng{display:flex;gap:6px;flex-wrap:wrap;font-size:12px}.eng span{padding:4px 10px;background:var(--acc);border-radius:99px}
+.cap{padding:12px;border:1px solid var(--bd);border-radius:14px;margin-bottom:8px;display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.cap b{display:block;font-size:11px;color:var(--mute);font-weight:600;margin-top:4px}
+.cp{border:1px solid var(--bd);background:#fcfbf9;border-radius:10px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
+.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{background:var(--acc);padding:4px 10px;border-radius:99px;font-size:13px}
+.score{margin:10px 0}.bar{height:10px;background:#efebe5;border-radius:99px;overflow:hidden}.bar div{height:100%;background:var(--ink);border-radius:99px}
+.bar+.dotx{display:none}
+.chart{overflow-x:auto}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.acct{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd);font-size:14px}.acct:last-child{border:0}
+.ok{color:#0a7a00;font-weight:700;font-size:12px}
+.song{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}.song:last-child{border:0}
+.disc{width:38px;height:38px;border-radius:50%;background:conic-gradient(var(--ink),#555,var(--ink));position:relative;flex:none}.disc:after{content:"";position:absolute;inset:14px;background:var(--neon);border-radius:50%}
+.note{font-size:12px;color:var(--mute);text-align:center;margin-top:10px}
+.pg{display:none}.pg.on{display:block}
+.spin{text-align:center;padding:40px 10px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--neon);border:1px solid var(--ink);margin:0 3px;animation:b 1s infinite}.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes b{50%{transform:translateY(-8px)}}
+.pill{background:var(--neon);border:1px solid var(--ink);border-radius:99px;padding:6px 10px;min-width:54px;text-align:center;font-size:13px;font-weight:700}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.st{border:1px solid var(--bd);border-radius:14px;padding:12px}.st b{font-size:20px;display:block}
+.ph{background:#fff;border:1px solid var(--bd);border-radius:22px;overflow:hidden;max-width:300px;margin:0 auto}.ph.vert{position:relative;aspect-ratio:9/16;background:#000;color:#fff;border:0}
+.ov{position:absolute;left:0;right:0;padding:12px;z-index:2;font-size:13px}.ov.t{top:0;background:linear-gradient(#0008,transparent);display:flex;justify-content:space-between}.ov.b{bottom:0;background:linear-gradient(transparent,#000a);padding-top:40px}
+.av{display:inline-block;width:26px;height:26px;border-radius:50%;background:linear-gradient(45deg,#ffd54a,#ff4fa3,#7b5bff);vertical-align:middle}
+.side{position:absolute;right:10px;bottom:100px;z-index:2;text-align:center;font-size:22px;line-height:1.7}
+.sg{margin-top:6px;font-size:12px;background:#0006;display:inline-block;padding:3px 9px;border-radius:99px}
+.prog{height:3px;background:#fff5;border-radius:9px;margin-bottom:8px}.prog i{display:block;width:40%;height:100%;background:#fff;border-radius:9px}
+.sticker{background:#fff;color:#000;border-radius:10px;padding:6px 10px;display:inline-block;font-weight:600}.msg{border:1px solid #fff9;border-radius:99px;padding:8px 14px;margin-top:8px}
+.fl{font-style:normal;border:1px solid #fff;border-radius:8px;padding:1px 8px;font-size:11px;margin-left:6px}
+</style></head><body><div class="wrap">
+<header><div class="logo">CKMETA<i>V.2</i></div><nav><button id="n1" class="on" onclick="go(1)">Upload</button><button id="n2" onclick="go(2)">Results</button><button id="n3" onclick="go(3)">Preview</button><button id="n4" onclick="go(4)">Profile</button></nav><button class="cp" id="acb" onclick="go(0)">Guest</button></header>
+
+<section id="p0" class="pg on"><div id="auth"></div></section><section id="p1" class="pg">
+ <div class="card"><h2>1 · Add your content</h2><p class="sub">Photo or video — we match it to what's trending in its niche.</p>
+  <label class="drop" id="drop"><input id="file" type="file" accept="image/*,video/*" hidden><div id="dz">Tap to upload<br><span class="sub">photo or video</span></div></label>
+  <div class="lbl">Title</div><input id="title" type="text" placeholder="Give your post a title"><div class="lbl">Caption / hook — scored live against niche trends</div><div class="row"><input id="cap" type="text" placeholder="Type a caption…" oninput="hk()"><b id="hs" class="pill">–</b></div><div class="row" style="margin-top:6px"><span class="sub" id="hw" style="margin:0"></span><button class="cp" onclick="addCap()">+ Compare</button></div><div id="caps" style="margin-top:8px"></div><div class="lbl">Niche</div><select id="niche"><option value="auto">Auto-detect</option><option>Fashion</option><option>Fitness</option><option>Food</option><option>Travel</option><option>Music</option><option>Comedy</option></select>
+ </div>
+ <div class="card"><h2>2 · Link your @</h2><p class="sub">We find your accounts across platforms and read your post history to pick your best times.</p>
+  <input id="handle" type="text" placeholder="@yourhandle" autocapitalize="off">
+  <div class="chips" id="plats"></div>
+  <div class="chip" id="art" onclick="this.classList.toggle('on')" style="display:inline-block">🎤 I'm a music artist</div>
+ </div>
+ <div class="card"><h2>3 · AI engines scouting</h2><div class="eng"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>Grok</span></div>
+  <button class="btn" onclick="run()">Analyze my content <small>●</small></button></div>
+ <p class="note">AI suggestions are estimates from live web search, not guarantees.</p>
+</section>
+
+<section id="p2" class="pg">
+ <div id="load" class="spin" style="display:none"><span class="dot"></span><span class="dot"></span><span class="dot"></span><p id="lt" class="sub"></p></div>
+ <div id="res"><div class="card"><p class="sub">Upload something first — results show here.</p></div></div></section><section id="p3" class="pg"><div id="prev"></div></section><section id="p4" class="pg"><div id="prof"></div>
+</section>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const PL=["Instagram","TikTok","YouTube","X"],ART=["Spotify","Apple Music","SoundCloud"];
+let sel=new Set(["Instagram","TikTok"]),media=null;
+function chips(){ $("plats").innerHTML=PL.map(p=>`<span class="chip ${sel.has(p)?'on':''}" onclick="tg('${p}')">${p}</span>`).join("")}
+function tg(p){sel.has(p)?sel.delete(p):sel.add(p);chips()}chips();
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);media={name:f.name,url:u,video:f.type.startsWith("video")};
+ $("dz").innerHTML=media.video?`<video src="${u}" muted playsinline></video>`:`<img src="${u}">`};
+function go(n){for(let i=0;i<5;i++){$("p"+i).classList.toggle("on",n==i);if(i)$("n"+i).classList.toggle("on",n==i)}if(n==0)acct();if(n==3)preview();if(n==4)profile();scrollTo(0,0)}
+const D={
+Fashion:{c:["Outfit of the day, no notes.","Soft launch of the fit you'll copy tomorrow.","Main character wardrobe, unlocked.","Quiet luxury, loud confidence."],t:[["#ootd","#streetstyle","#fitcheck","#grwm"],["#styleinspo","#outfitideas","#fashiontok","#thrifted"],["#lookbook","#minimalstyle","#aesthetic","#viralfashion"],["#whatiwore","#fyp","#reels","#trending"]],s:[["Espresso","Sabrina Carpenter"],["Pink Pony Club","Chappell Roan"],["Good Luck, Babe!","Chappell Roan"],["Apple","Charli xcx"]]},
+Fitness:{c:["Day 1 or one more day. You decide.","Built in silence, shown in public.","Sweat now, flex later.","The only bad workout is the one you skipped."],t:[["#gymtok","#fitnessmotivation","#workoutoftheday","#legday"],["#gymrat","#fitfam","#trainhard","#pumpcover"],["#hybridathlete","#cardio","#strengthtraining","#gymlife"],["#fyp","#reels","#fitcheck","#trending"]],s:[["Not Like Us","Kendrick Lamar"],["Lose Control","Teddy Swims"],["Stronger","Kanye West"],["Houdini","Eminem"]]},
+Food:{c:["Calories don't count when it looks this good.","Recipe in the comments. You're welcome.","Taste first, plate second.","Dinner, but make it cinematic."],t:[["#foodtok","#foodie","#recipeoftheday","#easyrecipes"],["#whatieatinaday","#homecooking","#foodporn","#asmrfood"],["#cookwithme","#mealprep","#dinnerideas","#tastetest"],["#fyp","#reels","#viralrecipe","#trending"]],s:[["Austin","Dasha"],["Beautiful Things","Benson Boone"],["Cruel Summer","Taylor Swift"],["Ordinary","Alex Warren"]]},
+Travel:{c:["Somewhere between lost and found.","Pin this for your next escape.","Passport stamped, soul refilled.","The view did the talking."],t:[["#traveltok","#wanderlust","#traveldiaries","#hiddengem"],["#bucketlist","#traveltheworld","#roamtheplanet","#explore"],["#sunsetlover","#goldenhour","#vacationmode","#aesthetictravel"],["#fyp","#reels","#viraltravel","#trending"]],s:[["Sunroof","Nicky Youre"],["Golden Hour","JVKE"],["Levitating","Dua Lipa"],["Heat Waves","Glass Animals"]]},
+Music:{c:["Not a drop of this is finished. Listen anyway.","New sound, who dis.","Headphones on. World off.","If this hits, you know what to do."],t:[["#newmusic","#unsignedartist","#studio","#musicproducer"],["#hiphop","#rnb","#indieartist","#songwriter"],["#snippet","#newrelease","#musictok","#behindthescenes"],["#fyp","#reels","#viralsong","#trending"]],s:[["Luther","Kendrick Lamar & SZA"],["Die With A Smile","Lady Gaga & Bruno Mars"],["Lose Control","Teddy Swims"],["Birds of a Feather","Billie Eilish"]]},
+Comedy:{c:["I wish I was joking. I'm not.","Tell me you relate without telling me.","POV: you thought today would be normal.","This took 14 takes and zero dignity."],t:[["#comedy","#funny","#relatable","#skit"],["#povcomedy","#memes","#lol","#standup"],["#funnyreels","#comedytok","#jokes","#fypシ"],["#fyp","#reels","#viralcomedy","#trending"]],s:[["Not Like Us","Kendrick Lamar"],["Espresso","Sabrina Carpenter"],["Bad Romance","Lady Gaga"],["Sunroof","Nicky Youre"]]},
+Lifestyle:{c:["Little moments, big energy.","This is your sign to post it.","Soft life, loud results.","Current mood: exactly this."],t:[["#aesthetic","#lifestyle","#dayinmylife","#thatgirl"],["#vibes","#softlife","#goldenhour","#mood"],["#inspo","#creator","#contentcreator","#photodump"],["#fyp","#reels","#viral","#trending"]],s:[["Espresso","Sabrina Carpenter"],["Golden Hour","JVKE"],["Beautiful Things","Benson Boone"],["Apple","Charli xcx"]]}};
+const KW={Fashion:/fit|ootd|outfit|style|dress|wear|fashion/i,Fitness:/gym|workout|lift|run|fit(ness)?|train/i,Food:/food|eat|cook|meal|dinner|recipe|pizza|cake/i,Travel:/trip|travel|beach|sunset|hike|vacation|city/i,Music:/studio|song|beat|mic|music|album|concert/i,Comedy:/funny|skit|joke|meme|lol/i};
+function guess(n){const k=Object.keys(KW).find(k=>KW[k].test(n));return k||"Lifestyle"}
+function rng(s){let h=0;for(const c of s)h=h*31+c.charCodeAt(0)|0;return()=>{h=(h*1664525+1013904223)|0;return((h>>>0)%1000)/1000}}
+function chart(vals,labels,h,ytxt){const W=320,H=h||130,P=22,n=vals.length,mx=Math.max(...vals);
+ const pts=vals.map((v,i)=>[P+i*(W-2*P)/(n-1),H-P-(v/mx)*(H-2*P)]);
+ const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");
+ return `<svg viewBox="0 0 ${W} ${H+14}" style="background:transparent"><path d="M${P} ${H-P}H${W-P}" stroke="#14141420"/><path d="${d}" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-linejoin="round"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5.5" fill="var(--neon)" stroke="var(--line)" stroke-width="1"/><text x="${p[0]}" y="${H+8}" font-size="9" text-anchor="middle" fill="#7a766f">${labels[i]}</text>`).join("")}<text x="${P}" y="9" font-size="9" fill="#7a766f">${ytxt}</text></svg>`}
+function copy(b,t){navigator.clipboard&&navigator.clipboard.writeText(t).catch(()=>{});b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1200)}
+function run(){RF.c=RF.t=RF.s=0;
+ if(!media){$("dz").style.color="#c00";$("dz").innerHTML="Please upload a photo or video first";return}
+ go(2);$("res").innerHTML="";$("load").style.display="block";
+ const m=["Claude scanning trends…","ChatGPT checking top creators…","Gemini matching niche…","Grok reading live posts…","Syncing your @ accounts…"];let i=0;$("lt").textContent=m[0];
+ const iv=setInterval(()=>{$("lt").textContent=m[++i%m.length]},550);
+ setTimeout(()=>{clearInterval(iv);$("load").style.display="none";show()},2800)}
+function show(){
+ const nv=$("niche").value,niche=nv=="auto"?guess(media.name):nv,d=vary(D[niche],niche),h=($("handle").value||"@yourhandle").replace(/^@?/,"@"),R=rng(media.name+h+niche),isArt=$("art").classList.contains("on");
+ const sc=k=>Math.round(62+R()*34);const s=window.LIVEF||{Reels:sc(),Posts:sc(),Stories:sc()};
+ const best=Object.entries(s).sort((a,b)=>b[1]-a[1])[0][0];
+ const tagVals=window.LIVEHP||d.t.map(()=>Math.round(40+R()*60)),days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],dv=(window.REALT&&REALT.days)||days.map(()=>Math.round(30+R()*70));
+ const hrs=["6a","9a","12p","3p","6p","9p","11p"],hv=(window.REALT&&REALT.hours)||hrs.map(()=>Math.round(25+R()*75));
+ const bd=days[dv.indexOf(Math.max(...dv))],bh=hrs[hv.indexOf(Math.max(...hv))];
+ const accts=(window.LIVEON?[...CON]:[...sel].concat(isArt?ART:[])).map(p=>[p,h]);CTX={niche,d,h,s,best};PV.c=0;PV.t=0;PV.s=0;PV.v=0;
+ $("res").innerHTML=`
+ <div class="card"><div class="row"><div><h2>${esc($("title").value)||("Niche: "+niche)}</h2><p class="sub" style="margin:0">${niche} · best format: <b style="color:var(--ink)">${best}</b></p></div>
+ ${media.video?`<video src="${media.url}" muted playsinline style="width:64px;height:64px;object-fit:cover;border-radius:12px"></video>`:`<img src="${media.url}" style="width:64px;height:64px;object-fit:cover;border-radius:12px">`}</div></div>
+ <div class="card"><h2>Viral potential</h2><p class="sub">Likelihood to take off, by format</p>
+ ${Object.entries(s).map(([k,v])=>`<div class="score"><div class="row"><span>${k}</span><b>${v}/100</b></div><div class="bar"><div style="width:${v}%"></div></div></div>`).join("")}</div>
+ <div class="card"><div class="row"><h2>Top 4 captions</h2><button class="cp" onclick="rf('c')">↻ Refresh</button></div><p class="sub">Most trending phrasing in ${niche}</p>
+ ${d.c.map((c,i)=>`<div class="cap"><div>${c}<b>Hook score ${hook(c,niche)}%</b></div><button class="cp" onclick="copy(this,'${c.replace(/'/g,"\\'")}')">Copy</button></div>`).join("")}</div>
+ <div class="card"><div class="row"><h2>Hashtag sets</h2><button class="cp" onclick="rf('t')">↻ Refresh</button></div><p class="sub">4 groups of 4 · tap Copy to grab a set</p>
+ ${d.t.map((g,i)=>`<div class="row" style="margin-bottom:10px;align-items:flex-start"><div class="tags">${g.map(t=>`<span>${t}</span>`).join("")}</div><button class="cp" onclick="copy(this,'${g.join(" ")}')">Copy</button></div>`).join("")}
+ <div class="lbl">Popularity by set</div><div class="chart">${chart(tagVals,["Set 1","Set 2","Set 3","Set 4"],120,"popularity")}</div></div>
+ <div class="card"><h2>Best day &amp; time to post</h2><p class="sub">Based on ${h} activity · top slot: <b style="color:var(--ink)">${bd} at ${bh}</b></p>
+ <div class="lbl">By day</div><div class="chart">${chart(dv,days,110,"engagement")}</div>
+ <div class="lbl">By hour</div><div class="chart">${chart(hv,hrs,110,"engagement")}</div></div>
+ <div class="card"><h2>What &amp; where to post</h2>
+ <div class="acct"><span>🥇 ${best}</span><span class="ok">Post first</span></div>
+ <div class="acct"><span>Reels + TikTok cross-post</span><span class="ok">Same day</span></div>
+ <div class="acct"><span>Story teaser with poll sticker</span><span class="ok">+2 hrs</span></div></div>
+ <div class="card"><div class="row"><h2>Trending songs for this</h2><button class="cp" onclick="rf('s')">↻ Refresh</button></div><p class="sub">Likely to lift reach on ${niche.toLowerCase()} content</p>
+ ${d.s.map((x,i)=>`<div class="song"><div class="disc"></div><div style="flex:1"><b>${x[0]}</b><br><span class="sub" style="margin:0">${x[1]}</span></div><span class="ok">${x[2]||95-i*3}%</span></div>`).join("")}</div>
+ <div class="card"><h2>Linked accounts</h2><p class="sub">Found under ${h}</p>
+ ${accts.map(a=>`<div class="acct"><span>${a[0]} · ${a[0] in {Spotify:1,"Apple Music":1,SoundCloud:1}?a[1]:h}</span><span class="ok">● Metadata synced</span></div>`).join("")}</div>
+ <button class="btn" onclick="go(3)">Preview your post →</button><p class="note">Scores are AI estimates. Account stats come from each platform's official API.</p>`}
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let CTX=null,mine=[];const PV={f:"Reels",c:0,t:0,s:0,v:0};
+const nich=()=>$("niche").value=="auto"?(media?guess(media.name):"Lifestyle"):$("niche").value;
+function hook(t,n){if(!t.trim())return 0;let x=40,L=t.length;x+=L>=20&&L<=90?14:L<12?-8:L>140?-10:4;if(/\?/.test(t))x+=8;if(/\b(pov|wish|secret|nobody|stop|why|how|you|your|this|never|only)\b/i.test(t))x+=10;if(/\d/.test(t))x+=5;if(/\p{Emoji_Presentation}/u.test(t))x+=4;if(/link in bio|follow me/i.test(t))x-=8;if(KW[n]&&KW[n].test(t))x+=6;return Math.max(5,Math.min(98,x))}
+function hk(){const t=$("cap").value,n=hook(t,nich());$("hs").textContent=t?n+"%":"–";$("hw").textContent=!t?"":n>=80?"Strong hook 🔥":n>=65?"Decent — try a question or POV":"Weak — be more specific"}
+function addCap(){const t=$("cap").value.trim();if(!t)return;mine.push({t,n:hook(t,nich())});$("cap").value="";hk();const b=Math.max(...mine.map(m=>m.n));$("caps").innerHTML=mine.map(m=>`<div class="cap"><div>${esc(m.t)}<b>${m.n==b?"🔥 Best hook":"Hook score"}</b></div><span class="pill">${m.n}%</span></div>`).join("")}
+function fm(n){return typeof n!="number"?n:n>=1e9?(n/1e9).toFixed(1)+"B":n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":""+n}
+const H=()=>($("handle").value||"@yourhandle").replace(/^@?/,"@");
+function pd(h){const R=rng("p"+h),r=(a,b)=>Math.round(a+R()*(b-a)),mk=(F,L,V,x)=>({F,L,V,x});return{S:{
+Instagram:mk(r(8e3,420e3),r(2e5,9e6),r(5e5,3e7),{Posts:r(80,900),"Avg likes":r(300,18e3),"Avg reel views":r(5e3,300e3),"Story reach":r(1e3,60e3)}),
+TikTok:mk(r(8e3,600e3),r(3e5,2e7),r(1e6,8e7),{Videos:r(40,500),"Avg views":r(4e3,250e3),Shares:r(2e3,300e3)}),
+YouTube:mk(r(2e3,300e3),r(5e4,3e6),r(2e5,4e7),{Videos:r(20,300),"Avg views":r(2e3,90e3),"Watch hrs":r(5e3,900e3)}),
+X:mk(r(1e3,150e3),r(2e4,2e6),r(1e5,2e7),{Posts:r(300,9e3),Replies:r(100,4e3),Reposts:r(500,90e3)})},
+Sp:{M:r(5e3,2e6),F:r(2e3,300e3),T:r(1e6,2e8)},Ap:{P:r(3e5,6e7),F:r(1e3,120e3),Z:r(500,90e3)},
+proj:["Midnight Static","Golden Hour EP","Neon Letters","Skyline Tape"].map((n,i)=>({n,t:["Album","EP","Single","Single"][i],y:i<2?2026:2025,s:r(2e5,3e7)}))}}
+let PT="All";const pt=t=>{PT=t;profile()};
+function profile(){if(!AUTH){$("prof").innerHTML=lock();return}if(!CON.size){$("prof").innerHTML=cn()+'<div class="card"><p class="sub">Connect an app above to see your metadata.</p></div>';return}const h=H(),art=CON.has("Spotify")||CON.has("Apple Music"),D=pd(h),names=PL.filter(p=>CON.has(p)),tabs=["All",...names,...(art?["Streams"]:[]),...["Spotify","Apple Music"].filter(x=>CON.has(x))];if(!tabs.includes(PT)||(PT=="All"&&!names.length))PT=names.length?"All":"Streams";
+const grid=o=>`<div class="g">${Object.entries(o).map(([k,v])=>`<div class="st"><b>${fm(v)}</b><span class="sub" style="margin:0">${k}</span></div>`).join("")}</div>`;
+const sum=k=>names.reduce((a,p)=>a+D.S[p][k],0),pj=m=>`<div class="card"><h2>Recent projects</h2>${D.proj.map(p=>`<div class="song"><div class="disc"></div><div style="flex:1"><b>${p.n}</b><br><span class="sub" style="margin:0">${p.t} · ${p.y}</span></div><b>${p.s?fm(Math.round(p.s*m)):"–"}</b></div>`).join("")}</div>`;
+let b="",gr=true;
+if(PT=="All"){b=grid({Followers:sum("F"),Likes:sum("L"),Views:sum("V"),Platforms:names.length});if(art)b+=grid({"Spotify monthly":D.Sp.M,"Total streams":D.Sp.T+D.Ap.P})}
+else if(PT=="Streams"){gr=false;b=grid({"Total streams":D.Sp.T+D.Ap.P,"Music followers":D.Sp.F+D.Ap.F,"Spotify monthly":D.Sp.M,"Spotify streams":D.Sp.T,"Apple plays":D.Ap.P,"Shazams":D.Ap.Z})+pj(1)}
+else if(PT=="Spotify"){gr=false;b=grid({"Monthly listeners":D.Sp.M,Followers:D.Sp.F,"Total streams":D.Sp.T})+pj(1)}
+else if(PT=="Apple Music"){gr=false;b=grid({Plays:D.Ap.P,Followers:D.Ap.F,Shazams:D.Ap.Z})+pj(.4)}
+else{const p=D.S[PT];b=grid({[PT=="YouTube"?"Subscribers":"Followers"]:p.F,Likes:p.L,[PT=="X"?"Impressions":"Views"]:p.V,...p.x})}
+if(false){const R=rng(PT+h);let v=50;const vals=Array.from({length:7},()=>v+=R()*30-5);b+=`<div class="card"><h2>Follower growth</h2><p class="sub">Last 7 weeks</p><div class="chart">${chart(vals,["W1","W2","W3","W4","W5","W6","W7"],110,"followers")}</div></div>`}
+$("prof").innerHTML=cn()+`<div class="card"><div class="row" style="justify-content:flex-start"><span class="av" style="width:48px;height:48px"></span><div><h2 style="margin:0">${esc(h)}</h2><p class="sub" style="margin:0">Public data across ${names.length} platform${names.length==1?"":"s"}${art?" + music":""}</p></div></div><div class="chips" style="margin-top:12px">${tabs.map(t=>`<span class="chip ${PT==t?"on":""}" onclick="pt('${t}')">${t}</span>`).join("")}</div></div>${b}<p class="note">From each platform's official API. Metrics the platforms don't share publicly show as 0 or –.</p>`}
+const FL=["none","brightness(1.15) saturate(1.25)","grayscale(1) contrast(1.1)"],KEY={Post:"Posts",Reels:"Reels",Story:"Stories"};
+const pv=(k,v)=>{PV[k]=v;preview()};
+function mm(st){return media.video?`<video src="${media.url}#t=${[.5,2,4][PV.v]}" muted playsinline preload="metadata" style="${st}"></video>`:`<img src="${media.url}" style="${st};filter:${FL[PV.v]}">`}
+function preview(){if(!CTX||!media){$("prev").innerHTML='<div class="card"><p class="sub">Analyze your content first, then preview it here.</p></div>';return}
+const {d,h,niche}=CTX,caps=mine.map(m=>m.t).concat(d.c),cap=esc(caps[PV.c]||caps[0]),tags=d.t[PV.t].join(" "),u=esc(h.slice(1)),sg=mySongs.concat(d.s.slice(0,3)),song=sg[PV.s]||sg[0],f=PV.f;
+const tp=k=>window.LIVEHP?window.LIVEHP[PV.t]:70+((CTX.s[KEY[k]]*7+PV.t*11)%28),fs=["Post","Reels","Story"].map(k=>[k,Math.min(98,Math.round(CTX.s[KEY[k]]*.5+hook(caps[PV.c]||caps[0],niche)*.3+tp(k)*.2))]),best=fs.slice().sort((a,b)=>b[1]-a[1])[0],ig=pd(h).S.Instagram.x;
+const meta={Post:`avg ${fm(ig["Avg likes"])} likes per post`,Reels:`avg ${fm(ig["Avg reel views"])} views per reel`,Story:`~${fm(ig["Story reach"])} story reach`};
+const sgl=`<span class="sg">♪ ${song[0]} · ${song[1]}</span>`;
+const fr=f=="Post"?`<div class="ph"><div class="row" style="padding:10px"><span><span class="av"></span> <b>${u}</b></span><span>···</span></div><div style="aspect-ratio:4/5;overflow:hidden">${mm("width:100%;height:100%;object-fit:cover")}</div><div style="padding:8px 10px;font-size:20px">♡ 💬 ➤</div><div style="padding:0 10px 12px;font-size:14px"><b>${u}</b> ${cap} <span style="color:#3b5bdb">${tags}</span><div class="sub" style="margin:4px 0 0">♪ ${song[0]} · ${song[1]}</div></div></div>`
+:f=="Reels"?`<div class="ph vert">${mm("position:absolute;inset:0;width:100%;height:100%;object-fit:cover")}<div class="ov t"><span><span class="av"></span> <b>${u}</b><i class="fl">Follow</i></span><b>Reels</b></div><div class="side">♡<br>💬<br>➤</div><div class="ov b"><div>${cap} ${tags}</div>${sgl}</div></div>`
+:`<div class="ph vert">${mm("position:absolute;inset:0;width:100%;height:100%;object-fit:cover")}<div class="ov t" style="display:block"><div class="prog"><i></i></div><span class="av"></span> <b>${u}</b> <small>now</small></div><div class="ov b"><div class="sticker">${cap}</div><div style="font-size:12px;margin-top:4px">${tags}</div>${sgl}<div class="msg">Send message</div></div></div>`;
+const chip=(on,fn,t)=>`<span class="chip ${on?"on":""}" onclick="${fn}">${t}</span>`;
+$("prev").innerHTML=`<div class="card"><h2>${esc($("title").value)||"Preview"}</h2><div class="chips">${["Post","Reels","Story"].map(k=>chip(f==k,`pv('f','${k}')`,k)).join("")}</div>${fr}</div>
+<div class="card"><h2>Customize</h2><div class="lbl">Cover</div><div class="chips">${[0,1,2].map(i=>chip(PV.v==i,`pv('v',${i})`,"Cover "+(i+1))).join("")}</div><div class="lbl">Caption <span class="cp" onclick="rf('c')">↻ Refresh</span></div><select onchange="pv('c',+this.value)">${caps.map((c,i)=>`<option value="${i}" ${i==PV.c?"selected":""}>${esc(c.slice(0,55))}</option>`).join("")}</select><div class="lbl">Hashtags <span class="cp" onclick="rf('t')">↻ Refresh</span></div><div class="chips">${[0,1,2,3].map(i=>chip(PV.t==i,`pv('t',${i})`,"Set "+(i+1))).join("")}</div></div>
+<div class="card"><h2>Best format for your account</h2><p class="sub">Scored on ${esc(h)}'s metadata, your caption and hashtag set</p>${fs.map(([k,v])=>`<div class="score"><div class="row"><span>${k}${k==best[0]?" ⭐":""} <span class="sub" style="margin:0">· ${meta[k]}</span></span><b>${v}%</b></div><div class="bar"><div style="width:${v}%"></div></div></div>`).join("")}<p style="margin:10px 0 0"><b>Why ${best[0]}:</b> ${meta[best[0]]}, a ${hook(caps[PV.c]||caps[0],niche)}% hook and hashtag set ${PV.t+1} at ${tp(best[0])}% popularity in ${niche.toLowerCase()}.</p></div>
+<div class="card"><div class="row"><h2>Songs likely to go viral</h2><button class="cp" onclick="rf('s')">↻ Refresh</button></div><p class="sub">Tap to use · search your own music to see how it fits</p><div class="row" style="margin-bottom:6px"><input id="ss" type="text" placeholder="Song - Artist"><button class="cp" onclick="addSong()">Check fit</button></div>${sg.map((x,i)=>`<div class="song" onclick="pv('s',${i})" style="cursor:pointer;${PV.s==i?"background:var(--acc);border-radius:12px;padding:8px":""}"><div class="disc"></div><div style="flex:1"><b>${x[0]}</b><br><span class="sub" style="margin:0">${x[1]} · fits ${niche.toLowerCase()} ${best[0]=="Post"?"posts":best[0].toLowerCase()}</span></div><span class="ok">${x[2]||95-i*4}%</span></div>`).join("")}</div>`}
+const RF={c:0,t:0,s:0};let mySongs=[],AUTH=null,CON=new Set(),A={m:"home"},U={};
+const NN={Fashion:["fit","look","outfit","style"],Fitness:["workout","gym day","progress","lift"],Food:["dish","recipe","bite","dinner"],Travel:["view","trip","escape","adventure"],Music:["track","sound","session","snippet"],Comedy:["day","joke","moment","take"],Lifestyle:["moment","day","mood","vibe"]};
+const TP=["This {n} hit different.","POV: your {n} just went viral.","Nobody talks about this {n} enough.","Save this {n} for later.","Tell me this {n} isn't elite.","3 reasons this {n} works (watch till the end).","Why is no one talking about this {n}?","Your sign to share the {n} you've been sitting on.","Rate this {n} 1–10. Be honest.","The {n} that changed my whole week.","Wait for the {n}.","I tried this {n} so you don't have to."];
+const GT=["#explorepage","#viralreels","#foryou","#creator","#contentcreator","#fypage","#reelsinstagram","#trending2026"],XS=[["Good Luck, Babe!","Chappell Roan"],["Birds of a Feather","Billie Eilish"],["Luther","Kendrick Lamar & SZA"],["Die With A Smile","Lady Gaga & Bruno Mars"],["APT.","ROSÉ & Bruno Mars"],["Taste","Sabrina Carpenter"],["Ordinary","Alex Warren"],["Manchild","Sabrina Carpenter"]];
+const shf=(a,R)=>a.map(x=>[R(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+function vary(d,n){const o={...d};if(RF.c){const R=rng(n+"c"+RF.c),ns=NN[n]||NN.Lifestyle;o.c=shf(TP,R).slice(0,4).map(t=>t.replace("{n}",ns[Math.floor(R()*ns.length)]))}
+if(RF.t){const R=rng(n+"t"+RF.t),p=shf([...new Set(d.t.flat())].filter(x=>!GT.includes(x)),R),g=shf(GT,R);o.t=[0,1,2,3].map(i=>[0,1,2].map(j=>p[(i*3+j)%p.length]).concat(g[i]))}
+if(RF.s){const R=rng(n+"s"+RF.s);o.s=shf(d.s,R).slice(0,2).concat(shf(XS,R).slice(0,2))}return o}
+function rf(k){RF[k]++;CTX.d=vary(D[CTX.niche],CTX.niche);PV.c=0;PV.t=0;PV.s=0;$("p3").classList.contains("on")?preview():show()}
+function addSong(){const v=($("ss").value||"").trim();if(!v)return;const p=v.split(/\s+[-–]\s+/),R=rng(v.toLowerCase()+CTX.niche);mySongs.unshift([p[0],p[1]||"Your music",Math.round(60+R()*37)]);mySongs=mySongs.slice(0,3);PV.s=0;preview()}
+const gv=id=>$(id)?$(id).value.trim():"";
+function am(m,e){A.m=m;A.e=e||"";acct()}
+function guest(){AUTH=null;CON.clear();acct();go(1)}
+function out(){AUTH=null;CON.clear();A={m:"home"};acct()}
+const cd=()=>String(100000+Math.floor(Math.random()*900000));
+function su(){const u=gv("a1"),p=$("a2").value,ph=gv("a3");if(u.length<3)return am("signup","Username needs 3+ characters");if(U[u.toLowerCase()])return am("signup","Username taken");if(p.length<6)return am("signup","Password needs 6+ characters");if(ph.replace(/\D/g,"").length<7)return am("signup","Enter a valid phone number");A={m:"code",tmp:{u,p,ph},ph,code:cd()};acct()}
+function vc(){if(gv("a1")!=A.code)return am("code","Wrong code, try again");const t=A.tmp;U[t.u.toLowerCase()]={u:t.u,p:t.p,ph:t.ph};AUTH=t.u;A={m:"connect"};acct()}
+function li(){const r=U[gv("a1").toLowerCase()];if(!r||r.p!=$("a2").value)return am("login","Wrong username or password");AUTH=r.u;A={m:"home"};acct();go(1)}
+function fp(){const r=U[gv("a1").toLowerCase()];if(!r)return am("forgot","No account with that username");A={m:"reset",u:r.u,code:cd(),ph:"•••• "+r.ph.slice(-3)};acct()}
+function rs(){if(gv("a1")!=A.code)return am("reset","Wrong code");const p=$("a2").value;if(p.length<6)return am("reset","Password needs 6+ characters");U[A.u.toLowerCase()].p=p;am("login","Password updated. Log in below.")}
+const ALLA=[...PL,"Spotify","Apple Music"];
+var apps=()=>`<div class="lbl">Your @</div><input id="hh" type="text" value="${esc($("handle").value)}" placeholder="@yourhandle" onchange="shh(this.value)" style="margin-bottom:8px">${ALLA.map(p=>`<div class="acct"><span>${p}</span><button class="cp" onclick="tc('${p}')">${CON.has(p)?"✓ Connected":"Connect"}</button></div>`).join("")}<p class="note">Demo toggle. Real connect opens each app's secure login.</p>`;
+function shh(v){$("handle").value=v;if($("p4").classList.contains("on"))profile()}
+function tc(p){const v=$("hh");if(v)$("handle").value=v.value;CON.has(p)?CON.delete(p):CON.add(p);$("p4").classList.contains("on")?profile():acct()}
+const cn=()=>`<div class="card"><h2>Connected apps</h2>${apps()}</div>`;
+const gh="background:#ece8e2;color:var(--ink)";
+const lock=()=>`<div class="card"><h2>🔒 Members only</h2><p class="sub">Sign up or log in to connect Instagram, TikTok, YouTube and your music apps, and see your metadata and streams.</p><button class="btn" onclick="am('signup');go(0)">Sign up</button><button class="btn" style="${gh}" onclick="am('login');go(0)">Log in</button></div>`;
+function acct(){const m=A.m,e=A.e?`<p class="sub" style="color:#a30">${esc(A.e)}</p>`:"",inp=(id,ph,t)=>`<input id="${id}" type="${t||"text"}" placeholder="${ph}" style="margin-bottom:8px" autocomplete="off">`,bt=(f,t,s)=>`<button class="btn" style="${s||""}" onclick="${f}">${t}</button>`,dm=(c,w)=>`<div class="card" style="background:#fffbe0">Demo: ${w} <b>${c}</b><br><span class="sub" style="margin:0">Real texts need an SMS provider.</span></div>`;
+const V={
+home:()=>AUTH?`<h2>Hi, ${esc(AUTH)}</h2><p class="sub">${CON.size} app${CON.size==1?"":"s"} connected</p>${bt("go(1)","Continue")}${bt("am('connect')","Manage connected apps",gh)}${bt("out()","Log out",gh)}`:`<h2>Welcome to CKMETA</h2><p class="sub">Log in to connect your social and music accounts.</p>${bt("am('login')","Log in")}${bt("am('signup')","Sign up",gh)}${bt("guest()","Continue as guest",gh)}<p class="note">Guests can try uploads, captions and previews, but can't connect social or music apps.</p>`,
+signup:()=>`<h2>Create account</h2>${inp("a1","Username")}${inp("a2","Password (6+ characters)","password")}${inp("a3","Phone, e.g. +15551234567","tel")}${e}${bt("su()","Send verification code")}${bt("am('home')","Back",gh)}`,
+code:()=>`<h2>Enter your code</h2><p class="sub">We sent a 6-digit code to ${esc(A.ph)}.</p>${A.code?dm(A.code,"your code is"):""}${inp("a1","6-digit code")}${e}${bt("vc()","Verify")}${bt("am('home')","Cancel",gh)}`,
+connect:()=>`<h2>Connect your apps</h2><p class="sub">Link what you use so we can track your metadata and streams.</p>${apps()}${bt("go(1)","Continue")}`,
+login:()=>`<h2>Log in</h2>${inp("a1","Username")}${inp("a2","Password","password")}${e}${bt("li()","Log in")}<p class="note"><a href="#" onclick="am('forgot');return false" style="color:var(--ink)">Forgot password?</a></p>${bt("am('home')","Back",gh)}`,
+forgot:()=>`<h2>Reset password</h2><p class="sub">We'll text a code to the phone on your account.</p>${inp("a1","Username")}${e}${bt("fp()","Send code")}${bt("am('login')","Back",gh)}`,
+reset:()=>`<h2>New password</h2><p class="sub">Code sent to ${esc(A.ph)}</p>${A.code?dm(A.code,"your code is"):""}${inp("a1","6-digit code")}${inp("a2","New password","password")}${e}${bt("rs()","Reset password")}`};
+$("auth").innerHTML=`<div class="card">${V[m]()}</div>`;$("acb").textContent=AUTH||"Guest"}
+go(0)
+</script><script src="/live.js"></script></body></html>
